@@ -1,0 +1,14 @@
+[project]
+name = "parlance"
+version = "0.1.0"
+description = "Parlance is a base wordlist generation tool that processes web content using NLP and performs word distribution analysis to build wordlists based on word usage."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "aiohttp>=3.11.18",
+    "bs4>=0.0.2",
+    "nltk>=3.9.1",
+]
+
+[project.scripts]
+parlance = "parlance.cli:app"
