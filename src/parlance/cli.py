@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import sys
 import argparse
 import aiohttp
 import asyncio
@@ -7,7 +8,7 @@ import string
 from bs4 import BeautifulSoup
 from nltk.corpus import stopwords, brown
 from nltk.tokenize import word_tokenize
-from nltk import FreqDist, UnigramTagger
+from nltk import FreqDist, UnigramTagger, download
 
 # customized set of stopwords
 custom_stop_words = [
@@ -32,6 +33,12 @@ def logo():
         \\,__.|.__,/
             (_)
     """
+
+def download_corpus():
+    print("downloading necessary corpus files for NLP processing")
+    download('brown',quiet=True)
+    download('stopwords', quiet=True)
+    download('punkt_tab', quiet=True)
 
 async def process_urls(urls: list, top:int = 100, ignore:list = [], min:int = 5, numbers: bool = False, outfile: str = ""):
 
@@ -104,13 +111,18 @@ def parse_arguments():
                     description='Uses NLP to generate wordlists for use in brute force attacks.',
     )
 
+    parser.add_argument('-c', '--corpus', dest='corpus', action='store_true', help="Download required corpus (Only needed once)") 
     parser.add_argument('-t', '--top', dest='top', type=int, default=100, metavar='N', help="Request the top N words") 
     parser.add_argument('-m', '--min', dest='min', type=int, default=5, metavar='LEN', help="Minimum word length (Default is set to 5)") 
     parser.add_argument('-i', '--ignore', dest='ignore', type=str, nargs='+', metavar='WORD', help="Additional words to ignore")
-    parser.add_argument('-n', '--numbers', dest='numbers', action="store_true", help="Allow numbers to be included in the output (Default is to filter numbers)")
+    parser.add_argument('-n', '--numbers', dest='numbers', action='store_true', help="Allow numbers to be included in the output (Default is to filter numbers)")
     parser.add_argument('-o', '--outfile', dest='outfile', type=str, metavar='OUTFILE', help="Output the list to a file")
-    parser.add_argument('-u', '--urls', nargs='+', dest='urls', required=True, help="URL to process for words")
+    parser.add_argument('-u', '--urls', nargs='+', dest='urls', help="URL to process for words")
     args = parser.parse_args()
+
+    if not args.urls and not args.corpus:
+        parser.print_help()
+        print("corpus option or url(s) must be supplied.")
 
     if args.urls:
         print(logo())
@@ -121,6 +133,10 @@ def parse_arguments():
 
 async def main():
     args = parse_arguments()
+    if args.corpus:
+        download_corpus()
+        sys.exit(0)
+
     await process_urls(
         args.urls, 
         top=args.top, 

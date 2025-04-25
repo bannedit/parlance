@@ -18,7 +18,11 @@ cd parlance/
 ```
 
 ```bash
-uv pip install .
+pipx install .
+```
+Additional corpus files are required as well. These can be installed using the *-c* option:
+```bash
+parlance -c
 ```
 
 
