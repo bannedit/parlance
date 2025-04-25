@@ -23,6 +23,8 @@ pipx install .
 Additional corpus files are required as well. These can be installed using the *-c* option:
 ```bash
 parlance -c
+
+
 ```
 
 
@@ -30,12 +32,13 @@ parlance -c
 
 ```bash
 parlance -h
-usage: parlance [-h] [-t N] [-m LEN] [-i WORD [WORD ...]] [-n] [-o OUTFILE] -u URLS [URLS ...]
+usage: parlance [-h] [-c] [-t N] [-m LEN] [-i WORD [WORD ...]] [-n] [-o OUTFILE] [-u URLS [URLS ...]]
 
 Uses NLP to generate wordlists for use in brute force attacks.
 
 options:
   -h, --help            show this help message and exit
+  -c, --corpus          Download required corpus (Only needed once)
   -t, --top N           Request the top N words
   -m, --min LEN         Minimum word length (Default is set to 5)
   -i, --ignore WORD [WORD ...]

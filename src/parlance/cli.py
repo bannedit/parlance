@@ -123,6 +123,11 @@ def parse_arguments():
     if not args.urls and not args.corpus:
         parser.print_help()
         print("corpus option or url(s) must be supplied.")
+        sys.exit(-1)
+
+    if args.corpus:
+        download_corpus()
+        sys.exit()
 
     if args.urls:
         print(logo())
@@ -133,9 +138,6 @@ def parse_arguments():
 
 async def main():
     args = parse_arguments()
-    if args.corpus:
-        download_corpus()
-        sys.exit(0)
 
     await process_urls(
         args.urls, 
