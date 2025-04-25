@@ -69,7 +69,6 @@ async def process_urls(urls: list, top:int = 100, ignore:list = [], min:int = 5,
     unigram_tagger = UnigramTagger(brown_tagged)
     tagged = unigram_tagger.tag(clean_tokens)
 
-    print(tagged)
     for word in tagged:
         if word[1]:
             continue
